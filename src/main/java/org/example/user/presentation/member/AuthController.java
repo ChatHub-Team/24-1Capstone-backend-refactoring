@@ -2,7 +2,7 @@
 //
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
-//import org.example.config.jwt.TokenProvider;
+//import org.example.global.config.security.jwt.TokenProvider;
 //import org.example.user.application.member.UserService;
 //import org.example.user.domain.dto.request.token.GetAccessTokenRequest;
 //import org.example.user.domain.dto.request.token.OAuthAccessTokenRequest;

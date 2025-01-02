@@ -1,4 +1,4 @@
-package org.example.config.jwt;
+package org.example.global.config.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

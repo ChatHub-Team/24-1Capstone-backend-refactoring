@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.global.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package org.example.config.oauth;
+package org.example.global.config.security.oauth;
 import lombok.RequiredArgsConstructor;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.member.UserRepository;

@@ -1,9 +1,9 @@
-package org.example.config.oauth;
+package org.example.global.config.security.oauth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.example.config.jwt.TokenProvider;
+import org.example.global.config.security.jwt.TokenProvider;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;

@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import org.example.global.config.security.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import org.example.user.application.member.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

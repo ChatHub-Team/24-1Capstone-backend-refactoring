@@ -1,4 +1,4 @@
-package org.example.config.oauth;
+package org.example.global.config.security.oauth;
 
 import java.util.Map;
 

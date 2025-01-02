@@ -1,14 +1,13 @@
-package org.example.config.oauth;
-import jakarta.servlet.http.Cookie;
+package org.example.global.config.security.oauth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.example.config.jwt.TokenProvider;
+import org.example.global.config.security.jwt.TokenProvider;
 import org.example.user.domain.entity.token.RefreshToken;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
-import org.example.util.CookieUtil;
+import org.example.global.util.CookieUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
