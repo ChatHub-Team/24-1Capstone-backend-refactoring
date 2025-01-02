@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux' // Spring Boot WebFlux 의존성
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티를 사용하기 위한 스타터 추가
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // 타임리프에서 스프링시큐리티를 사용하기 위한 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1' //자바 jwt  라이브러리
+    implementation 'javax.xml.bind:jaxb-api:2.3.1' //xml 문서와 자바 객체 간 매핑을 자동화
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //OAuth2 의존성 추가
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0' //이쁘게
+    developmentOnly 'org.springframework.boot:spring-boot-devtools' //spring-dev-5에 추가하기
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'software.amazon.awssdk:chimesdkmeetings:2.25.33'
+
+
+
+
+
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'mysql:mysql-connector-java'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test' // 스프링 시큐리티를 테스트하기 위한 의존성 추가
+
+    //test 롬복 사용
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    //Querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+//task('release') {
+//    /* ./gradlew build를 먼저 실행하라는 뜻이다. */
+//    dependsOn("build")
+//
+//    doLast {
+//        def stdout = new ByteArrayOutputStream()
+//        /* exec - 커맨드 라인 프로세서; 파워셸/터미널에서 실행하는 것과 같다. */
+//        exec {
+//            /* $eb setenv SPRING_PROFILES_ACTIVE=prod */
+//            commandLine 'eb', 'setenv', 'SPRING_PROFILES_ACTIVE=prod'
+//            standardOutput = stdout
+//        }
+//        /* 결과 로깅을 위한 작업 */
+//        println "eb setenv SPRING_PROFILES_ACTIVE=prod :\n$stdout";
+//        exec {
+//            /* $eb deploy */
+//            commandLine 'eb', 'deploy'
+//            standardOutput = stdout
+//        }
+//        println "eb deploy :\n$stdout";
+//        println "Release succeeded."
+//    }
+//}
+
+clean {
+    delete file('src/main/generated')
+}
