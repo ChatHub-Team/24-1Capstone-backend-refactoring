@@ -25,10 +25,8 @@ public class MeetingApiRestController {
     })
     @PostMapping("/api/meetings")
     public CreateMeetingResponseDTO createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
-
        return chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
     }
-
 
     @Operation(summary = "해당 회의에 참가자 생성", description = "특정 회의에 참가자를 생성")
     @ApiResponses({
@@ -42,9 +40,6 @@ public class MeetingApiRestController {
         return chimeService.createAttendee(meetingId);
     }
 
-
-
-
     @Operation(summary = "회의 삭제 API", description = "특정 회의를 삭제")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "회의 삭제 성공"),
@@ -54,14 +49,8 @@ public class MeetingApiRestController {
     })
     @DeleteMapping("/api/meetings/{meetingId}")
     public void deleteMeeting(@PathVariable String meetingId) {
-
         chimeService.deleteMeeting(meetingId);
-
     }
-
-
-
-
 
     @Operation(summary = "열려 있는 모든 회의 조회 API", description = "현재 열려 있는 모든 회의를 조회")
     @ApiResponses({
@@ -70,9 +59,6 @@ public class MeetingApiRestController {
     })
     @GetMapping("/api/meetings")
     public List<CreateMeetingResponseDTO> listMeetings() {
-
         return chimeService.listMeetings();
     }
-
-
 }

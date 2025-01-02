@@ -10,7 +10,6 @@ public class GithubUserInfo implements OAuth2UserInfo {
         this.attributes = attributes;
     }
 
-
     @Override
     public String getProviderId() {
         Object idObject = attributes.get("id");
@@ -35,7 +34,6 @@ public class GithubUserInfo implements OAuth2UserInfo {
     public String getProvider() {
         return "github";
     }
-
 
     @Override
     public String getUserName() {
@@ -71,8 +69,7 @@ public class GithubUserInfo implements OAuth2UserInfo {
     public String getEmail() {
         return (String) attributes.get("email");
     }
-
-
+    
     @Override
     public boolean isHireable() {
         Object hireableObject = attributes.get("hireable");

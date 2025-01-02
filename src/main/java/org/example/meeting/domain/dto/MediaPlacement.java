@@ -14,7 +14,6 @@ public class MediaPlacement {
     private String signalingUrl;
     private String turnControlUrl;
 
-
     @Builder
     public MediaPlacement(String audioFallbackUrl, String audioHostUrl, String eventIngestionUrl, String screenDataUrl, String screenSharingUrl, String screenViewingUrl, String signalingUrl, String turnControlUrl) {
         this.audioFallbackUrl = audioFallbackUrl;

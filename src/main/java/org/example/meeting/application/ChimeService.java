@@ -13,7 +13,6 @@ import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 import java.util.*;
 
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,10 +22,8 @@ public class ChimeService {
     private final MeetingSessionService meetingSessionService;
     private final AttendeeSessionService attendeeSessionService;
 
-
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
     public CreateMeetingResponseDTO createMeeting(String applyUserName, String receiveUserName) {
-
 
         List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
         List<MeetingSession> receiveUserMeetings = meetingSessionService.listMeetings(receiveUserName);
@@ -74,7 +71,6 @@ public class ChimeService {
 
         CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
-
         MeetingSession meetingSession = MeetingSession.builder()
                 .externalMeetingId(createMeetingResponse.meeting().externalMeetingId())
                 .mediaRegion(createMeetingResponse.meeting().mediaRegion())
@@ -91,7 +87,6 @@ public class ChimeService {
                 .applyUserName(applyUserName)
                 .receiveUserName(receiveUserName)
                 .build();
-
 
         meetingSessionService.save(meetingSession);
 
@@ -113,18 +108,12 @@ public class ChimeService {
                 .applyUserName(meetingSession.getApplyUserName())
                 .receiveUserName(meetingSession.getReceiveUserName())
                 .build();
-
     }
-
-
 
     // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
     public CreateAttendeeResponseDTO createAttendee(String meetingID) {
 
-
         String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-
 
         // 이미 존재하는 참여자인지 확인
         Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
@@ -137,20 +126,16 @@ public class ChimeService {
                     .build();
         }
 
-
         //externalUserId 내 아이디로 설정
         CreateAttendeeRequest request = CreateAttendeeRequest.builder()
                 .meetingId(meetingID)
                 .externalUserId(externalUserId)
                 .build();
 
-
         CreateAttendeeResponse createAttendeeResponse = chimeSdkMeetingsClient.createAttendee(request);
-
 
         String attendeeId = createAttendeeResponse.attendee().attendeeId();
         String joinToken = createAttendeeResponse.attendee().joinToken();
-
 
         CreateAttendeeResponseDTO createAttendeeResponseDTO = CreateAttendeeResponseDTO.builder()
                 .attendeeId(attendeeId)
@@ -158,24 +143,16 @@ public class ChimeService {
                 .joinToken(joinToken)
                 .build();
 
-
         AttendeeSession attendeeSession = AttendeeSession.builder()
                 .attendeeId(attendeeId)
                 .externalUserId(externalUserId)
                 .joinToken(joinToken)
                 .meetingId(meetingID)
                 .build();
-
         attendeeSessionService.save(attendeeSession);
 
-
-
-
         return createAttendeeResponseDTO;
-
-
     }
-
 
     //meetingSession 및 방에 참여중인 attendeeSession 삭제
     public void deleteMeeting(String meetingId) {
@@ -183,19 +160,14 @@ public class ChimeService {
         DeleteMeetingRequest deleteMeetingRequest = DeleteMeetingRequest.builder()
                 .meetingId(meetingId)
                 .build();
-
         chimeSdkMeetingsClient.deleteMeeting(deleteMeetingRequest);
 
         meetingSessionService.deleteByMeetingId(meetingId);
 
         attendeeSessionService.deleteByMeetingId(meetingId);
-
-
     }
 
-
     // 열려있는 내 모든 회의 조회
-
     public List<CreateMeetingResponseDTO> listMeetings() {
         List<MeetingSession> meetingSessions = meetingSessionService.listMeetings(SecurityContextHolder.getContext().getAuthentication().getName());
         List<CreateMeetingResponseDTO> responseDTOs = new ArrayList<>();
@@ -223,10 +195,8 @@ public class ChimeService {
                     .build();
             responseDTOs.add(responseDTO);
         }
-
         return responseDTOs;
     }
-
 
     public static String getRandomString() {
         return getRandomString(2, 64);
@@ -243,10 +213,6 @@ public class ChimeService {
         }
         return sb.toString();
     }
-
-
-
-
 }
 
 

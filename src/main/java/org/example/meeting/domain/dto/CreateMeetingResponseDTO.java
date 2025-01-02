@@ -16,7 +16,6 @@ public class CreateMeetingResponseDTO {
     private String applyUserName;
     private String receiveUserName;
 
-
     @Builder
     public CreateMeetingResponseDTO(String externalMeetingId, MediaPlacement mediaPlacement, String mediaRegion, String meetingArn, String meetingId, String applyUserName, String receiveUserName) {
         this.externalMeetingId = externalMeetingId;

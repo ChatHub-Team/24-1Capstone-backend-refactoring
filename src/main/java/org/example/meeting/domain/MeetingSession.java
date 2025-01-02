@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,7 +30,6 @@ public class MeetingSession {
     private String meetingId;
     private String applyUserName;
     private String receiveUserName;
-
 
     @Builder
     public MeetingSession(String externalMeetingId, String audioFallbackUrl, String audioHostUrl, String eventIngestionUrl, String screenDataUrl, String screenSharingUrl, String screenViewingUrl, String signalingUrl, String turnControllerUrl, String mediaRegion, String meetingArn, String meetingId, String applyUserName, String receiveUserName) {

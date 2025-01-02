@@ -8,15 +8,10 @@ import java.time.LocalDateTime;
 @Getter
 public class CreateReservationRequestDTO {
 
-
     private String content;
-
     private LocalDateTime startTime;
-
     private LocalDateTime endTime;
-
     private String receiveUserName;
-
 
     @Builder
     public CreateReservationRequestDTO(String content, LocalDateTime startTime, LocalDateTime endTime, String receiveUserName) {

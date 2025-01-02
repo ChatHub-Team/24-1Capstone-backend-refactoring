@@ -1,6 +1,7 @@
 package org.example.exception;
 
 public class AttendeeSessionDeletionException extends RuntimeException {
+
     public AttendeeSessionDeletionException(String message) {
         super(message);
     }

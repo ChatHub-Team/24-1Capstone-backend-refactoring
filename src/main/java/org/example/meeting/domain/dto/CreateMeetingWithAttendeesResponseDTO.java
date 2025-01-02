@@ -15,7 +15,6 @@ public class CreateMeetingWithAttendeesResponseDTO {
     private String meetingId;
     private List<CreateAttendeeResponseDTO> attendees;
 
-
     @Builder
     public CreateMeetingWithAttendeesResponseDTO(String externalMeetingId, MediaPlacement mediaPlacement, String mediaRegion, String meetingArn, String meetingId, List<CreateAttendeeResponseDTO> attendees) {
         this.externalMeetingId = externalMeetingId;

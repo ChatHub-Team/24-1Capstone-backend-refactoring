@@ -1,4 +1,5 @@
 package org.example.meeting.application;
+
 import lombok.RequiredArgsConstructor;
 import org.example.exception.AttendeeSessionCreationException;
 import org.example.exception.AttendeeSessionNotFoundException;
@@ -36,17 +37,12 @@ public class AttendeeSessionService {
         }
     }
 
-
     public void deleteByMeetingId(String meetingId) {
-
         attendeeSessionRepository.deleteByMeetingId(meetingId);
-
     }
 
     public void deleteByExternalUserId(String externalUserId) {
-
         attendeeSessionRepository.deleteByExternalUserId(externalUserId);
-
     }
 
 }

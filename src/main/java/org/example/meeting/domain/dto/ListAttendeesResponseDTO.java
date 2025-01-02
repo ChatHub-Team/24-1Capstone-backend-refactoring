@@ -1,6 +1,5 @@
 package org.example.meeting.domain.dto;
 
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,6 +13,5 @@ public class ListAttendeesResponseDTO {
     @Builder
     public ListAttendeesResponseDTO(List<CreateAttendeeResponseDTO> attendees) {
         this.attendees = attendees;
-
     }
 }

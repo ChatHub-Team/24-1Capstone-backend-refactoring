@@ -2,12 +2,12 @@ package org.example.global.config.security.oauth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.global.config.security.CookieUtil;
 import org.example.global.config.security.jwt.TokenProvider;
 import org.example.user.domain.entity.token.RefreshToken;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
-import org.example.global.util.CookieUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -28,8 +28,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 //    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login"; //redirect 경로
     public static final String REDIRECT_PATH = "http://localhost:3000/api/auth/login"; //redirect 경로
-
-
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -53,7 +51,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
-
 
     private void saveRefreshToken(Long userId, String newRefreshToken) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
@@ -84,7 +81,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private String getTargetUrl(String token) {
         return UriComponentsBuilder.fromUriString(REDIRECT_PATH)
-//                .queryParam("token", token)
                 .build()
                 .toUriString();
     }

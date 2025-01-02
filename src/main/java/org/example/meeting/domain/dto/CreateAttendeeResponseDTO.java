@@ -10,7 +10,6 @@ public class CreateAttendeeResponseDTO {
     private String externalUserId;
     private String joinToken;
 
-
     @Builder
     public CreateAttendeeResponseDTO(String attendeeId, String externalUserId, String joinToken) {
         this.attendeeId = attendeeId;

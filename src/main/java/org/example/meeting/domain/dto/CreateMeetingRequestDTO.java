@@ -8,7 +8,6 @@ public class CreateMeetingRequestDTO {
     private String applyUserName;
     private String receiveUserName;
 
-
     @Builder
     public CreateMeetingRequestDTO(String applyUserName, String receiveUserName) {
         this.applyUserName = applyUserName;

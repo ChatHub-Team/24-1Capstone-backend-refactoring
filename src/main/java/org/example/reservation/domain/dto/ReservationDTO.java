@@ -37,7 +37,6 @@ public class ReservationDTO {
     public ReservationDTO() {
     }
 
-
     public List<ReservationDTO> toDtoList(List<Reservation> reservationList) {
         return reservationList.stream()
                 .map(m -> ReservationDTO.builder()
@@ -52,16 +51,4 @@ public class ReservationDTO {
                         .build())
                 .collect(Collectors.toList());
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-

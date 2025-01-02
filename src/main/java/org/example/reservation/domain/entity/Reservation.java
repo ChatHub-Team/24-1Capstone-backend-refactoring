@@ -22,14 +22,12 @@ public class Reservation {
     @Column(name = "id", updatable = false)
     private Long id;
 
-
     @Column(name = "content", nullable = false)
     private String content;
 
     @CreatedDate // 엔티티가 생성될 때 생성 시간 저장
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_user_id")
@@ -59,32 +57,13 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-
-
     //예약 신청 승인
     public void approve() {
-
         this.reservationStatus = ReservationStatus.CONFIRMED;
     }
 
-
     //예약 신청 거절
     public void refuse() {
-
         this.reservationStatus = ReservationStatus.REFUSE;
-
     }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-

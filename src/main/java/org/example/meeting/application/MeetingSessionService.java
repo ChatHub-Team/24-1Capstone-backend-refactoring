@@ -22,7 +22,6 @@ public class MeetingSessionService {
     public void save(MeetingSession meetingSession) {
         try {
             meetingSessionRepository.save(meetingSession);
-
         } catch (Exception e) {
             throw new MeetingSessionCreationException("Error saving meeting session: " + e.getMessage());
         }
@@ -54,8 +53,6 @@ public class MeetingSessionService {
         }
     }
 
-
-
     public Optional<MeetingSession> findByMeetingId(String meetingId) {
         try {
             return meetingSessionRepository.findByMeetingId(meetingId);
@@ -63,6 +60,4 @@ public class MeetingSessionService {
             throw new MeetingSessionNotFoundException("Error finding meeting session with meeting ID: " + meetingId);
         }
     }
-
-
 }

@@ -2,7 +2,7 @@ package org.example.global.config.security.oauth;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.global.util.CookieUtil;
+import org.example.global.config.security.CookieUtil;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.web.util.WebUtils;
@@ -30,7 +30,6 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
             removeAuthorizationRequestCookies(request, response);
             return;
         }
-
         CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, CookieUtil.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
     }
 

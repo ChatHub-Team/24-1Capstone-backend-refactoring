@@ -57,7 +57,6 @@ public class TokenProvider { // 계속해서 토큰을 생성하고 올바른 �
         }
     }
 
-
     // 토큰 기반으로 인증 정보를 가져오는 메서드
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);

@@ -18,7 +18,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-
 @Slf4j
 @Tag(name = "github-user-restapi", description = "회원 리스트를 보여주기 위한 RESTAPI")
 @RequiredArgsConstructor
@@ -48,7 +47,6 @@ public class UserApiRestController {
                 .bodyToFlux(GithubUserResponse.class);
     }
 
-
     @Operation(summary = "요청 사용자 상세 정보 조회API", description = "요청 사용자 상세 정보를 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "ok!!"),
@@ -70,33 +68,6 @@ public class UserApiRestController {
                     return Mono.error(new RuntimeException("API request failed with error "));
                 });
     }
-
-
-
-
-//    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "ok!!"),
-//            @ApiResponse(responseCode = "404", description = "user not found!!"),
-//            @ApiResponse(responseCode = "500", description = "internal server error!!"),
-//    })
-////    @GetMapping("/api/userinfo")
-//    public ResponseEntity findUserInfo() {
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-//
-//        System.out.println(userName);
-//        GitHubProfile gitHubProfile = gitHubProfileService.findByUserName(userName);
-//
-//        GithubProfileResponse githubProfileResponse = new GithubProfileResponse(gitHubProfile);
-//
-//        return ResponseEntity.ok()
-//                .body(githubProfileResponse);
-//    }
-
-
-
-
-
 }
 
 

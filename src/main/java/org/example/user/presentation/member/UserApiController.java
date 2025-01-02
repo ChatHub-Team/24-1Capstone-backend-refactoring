@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
-
-
 @Slf4j
 @Tag(name = "user-api-controller", description = "회원가입, 로그아웃을 위한 컨트롤러")
 @RequiredArgsConstructor
@@ -27,13 +25,6 @@ public class UserApiController {
 
     private final UserService userService;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestBasedOnCookieRepository;
-
-
-//    @PostMapping("/user")
-//    public String signup(AddUserRequest request) {
-//        userService.save(request); // 회원가입 메서드 호출
-//        return "redirect:/login"; // 회원 가입이 완료된 이후에 로그인 페이지로 이동
-//    }
 
     @Operation(summary = "사용자 로그아웃", description = "로그아웃 하면 refresh_token 쿠키에서 제거, authentication 제거")
     @ApiResponses({
@@ -47,8 +38,6 @@ public class UserApiController {
         return ResponseEntity.ok("You have been logged out successfully!!.");
     }
 
-
-
     @Operation(summary = "사용자 회원탈퇴", description = "회원탈퇴, 데이터베이스에 있는 회원 데이터 제거")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "ok!!"),
@@ -57,11 +46,7 @@ public class UserApiController {
     })
     @DeleteMapping("/api/user/resign")
     public ResponseEntity<Void> deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         userService.deleteUser();
-
         return ResponseEntity.noContent().build();
-
     }
-
 }

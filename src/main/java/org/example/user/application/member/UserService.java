@@ -22,7 +22,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.List;
 
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -33,9 +32,6 @@ public class UserService {
     private final MeetingSessionService meetingSessionService;
     private final AttendeeSessionService attendeeSessionService;
     private final ReservationService reservationService;
-
-
-
 
     public Flux<FollowingResponse> fetchFollowings(User user, int pageSize, int page) {
         String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
@@ -92,7 +88,6 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("unexpected user"));
         user.setAccessToken(accessToken);
-
     }
 
     public void deleteUserById(Long userId) {
@@ -129,7 +124,6 @@ public class UserService {
                 })
                 .bodyToFlux(FollowerResponse.class);
     }
-
 
     public Flux<FollowingResponse> fetchNonRegisteredFollowings(User user, int pageSize, int page) {
         String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
@@ -180,10 +174,8 @@ public class UserService {
         for (MeetingSession session : sessionList) {
             meetingSessionService.deleteByMeetingSessionId(session.getId());
         }
-
         attendeeSessionService.deleteByExternalUserId(userName);
     }
-
 
     public Long save(AddUserRequest dto) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -198,23 +190,6 @@ public class UserService {
     }
 
     public void saveUser(User user){
-
         userRepository.save(user);
-
     }
-
-
-
-
 }
-//    // 이 메서드는 새 사용자를 생성하고 저장합니다. 실제 사용 시 비밀번호 등 추가 정보 처리가 필요할 수 있습니다.
-//    private User createUser(String username) {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        User newUser = User.builder()
-//                .username(username)
-//                // 임시 비밀번호 설정; 실제 상황에서는 보다 안전한 접근이 필요합니다.
-//                .password(encoder.encode("defaultPassword"))
-//                .avatarUrl("image")
-//                .build();
-//        return userRepository.save(newUser);
-//    }

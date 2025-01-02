@@ -7,7 +7,6 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,5 +25,4 @@ public class SpringBootDeveloperApplication  {
     public AuditorAware<String> auditorProvider() {
         return () -> Optional.of(UUID.randomUUID().toString());
     }
-
 }

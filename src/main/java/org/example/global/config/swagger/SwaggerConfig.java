@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
                 bearerFormat = "JWT"
         )
 })
+
 @Configuration
 @RequiredArgsConstructor
 public class SwaggerConfig {
@@ -39,5 +40,4 @@ public class SwaggerConfig {
                 .pathsToMatch(paths)
                 .build();
     }
-
 }

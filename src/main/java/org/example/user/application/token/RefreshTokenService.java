@@ -11,8 +11,6 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-
-
     public RefreshToken findByUserId(Long userId) {
         return refreshTokenRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
