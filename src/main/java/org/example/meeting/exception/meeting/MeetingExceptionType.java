@@ -1,8 +1,8 @@
-package org.example.meeting.exception;
+package org.example.meeting.exception.meeting;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.example.exception.ExceptionType;
+import org.example.global.exception.ExceptionType;
 
 @Getter
 @AllArgsConstructor

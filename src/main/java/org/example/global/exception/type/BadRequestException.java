@@ -1,7 +1,7 @@
-package org.example.exception.type;
+package org.example.global.exception.type;
 
-import org.example.exception.BaseException;
-import org.example.exception.ExceptionType;
+import org.example.global.exception.BaseException;
+import org.example.global.exception.ExceptionType;
 
 public class BadRequestException extends BaseException {
 

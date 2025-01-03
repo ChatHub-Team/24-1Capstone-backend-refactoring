@@ -1,4 +1,4 @@
-package org.example.exception.type;
+package org.example.meeting.exception.meeting;
 
 public class MeetingSessionNotFoundException extends RuntimeException {
 

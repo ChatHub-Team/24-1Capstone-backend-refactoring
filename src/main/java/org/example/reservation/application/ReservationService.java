@@ -1,8 +1,8 @@
 package org.example.reservation.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.type.ReservationNotFoundException;
-import org.example.exception.type.UserNotFoundException;
+import org.example.reservation.exception.ReservationNotFoundException;
+import org.example.user.exception.UserNotFoundException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;

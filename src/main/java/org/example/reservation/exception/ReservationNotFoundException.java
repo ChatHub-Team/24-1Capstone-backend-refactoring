@@ -1,4 +1,4 @@
-package org.example.exception.type;
+package org.example.reservation.exception;
 
 public class ReservationNotFoundException extends RuntimeException {
 

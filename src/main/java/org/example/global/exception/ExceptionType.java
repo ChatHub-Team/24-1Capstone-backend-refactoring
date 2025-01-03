@@ -1,4 +1,4 @@
-package org.example.exception;
+package org.example.global.exception;
 
 public interface ExceptionType {
 

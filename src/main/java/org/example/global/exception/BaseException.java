@@ -1,5 +1,9 @@
-package org.example.exception;
+package org.example.global.exception;
 
+import lombok.Getter;
+import org.example.global.exception.ExceptionType;
+
+@Getter
 public class BaseException extends RuntimeException {
 
     private final ExceptionType exceptionType;

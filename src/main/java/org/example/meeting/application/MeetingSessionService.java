@@ -1,17 +1,15 @@
 package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.type.MeetingSessionCreationException;
-import org.example.exception.type.MeetingSessionNotFoundException;
-import org.example.exception.type.NotFoundException;
+import org.example.meeting.exception.meeting.MeetingSessionCreationException;
+import org.example.global.exception.type.NotFoundException;
 import org.example.meeting.domain.MeetingSession;
-import org.example.meeting.exception.MeetingExceptionType;
+import org.example.meeting.exception.meeting.MeetingExceptionType;
 import org.example.meeting.repository.MeetingSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
