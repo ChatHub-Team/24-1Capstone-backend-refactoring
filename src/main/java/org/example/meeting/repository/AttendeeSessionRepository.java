@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface AttendeeSessionRepository extends JpaRepository<AttendeeSession, Long> {
 
     Optional<AttendeeSession> findByExternalUserId(String externalUserId);
+    boolean existsByMeetingId(String meetingId);
+    boolean existsByExternalUserId(String externalUserId);
     void deleteByMeetingId(String meetingId);
     void deleteByExternalUserId(String externalUserId);
 }

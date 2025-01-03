@@ -45,8 +45,6 @@ public class GlobalExceptionHandler {
                 .body(ExceptionResponse.of(300, errorMessage));
     }
 
-
-
     //requestParam 검증
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> constraintViolationException(final ConstraintViolationException e) {
