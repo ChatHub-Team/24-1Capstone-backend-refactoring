@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleException(final Exception e) {
         log.error("[" + e.getClass() + "] : " + e.getMessage());
         return ResponseEntity.internalServerError()
-                .body(ExceptionResponse.of(100, e.getMessage()));
+                .body(ExceptionResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
 
     //valid 검증
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
         }
         String errorMessage = String.join(" ", errorMessages);
         return ResponseEntity.badRequest()
-                .body(ExceptionResponse.of(300, errorMessage));
+                .body(ExceptionResponse.of(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
     //requestParam 검증
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
                 .toList();
         log.warn("[" + e.getClass() + "] " + errorResponses);
         return ResponseEntity.badRequest()
-                .body(ExceptionResponse.of(301, errorResponses.toString()));
+                .body(ExceptionResponse.of(HttpStatus.BAD_REQUEST.value(), errorResponses.toString()));
     }
 
     //requestPart 검증
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> unAuthorizedException(final MissingServletRequestPartException e) {
 
         return ResponseEntity.badRequest()
-                .body(ExceptionResponse.of(302, e.getMessage()));
+                .body(ExceptionResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
     // login 검증
