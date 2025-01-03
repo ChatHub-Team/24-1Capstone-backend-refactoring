@@ -2,16 +2,20 @@ package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.global.common.UuidUtils;
+import org.example.global.exception.type.BadRequestException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.domain.dto.MediaPlacement;
+import org.example.meeting.exception.attendee.AttendeeExceptionType;
+import org.example.meeting.exception.meeting.MeetingExceptionType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,184 +25,164 @@ public class ChimeService {
     private final ChimeSdkMeetingsClient chimeSdkMeetingsClient;
     private final MeetingSessionService meetingSessionService;
     private final AttendeeSessionService attendeeSessionService;
+    private static final String MEDIA_REGION = "ap-northeast-2";
 
-    // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
     public CreateMeetingResponseDTO createMeeting(String applyUserName, String receiveUserName) {
-
-        List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
-        List<MeetingSession> receiveUserMeetings = meetingSessionService.listMeetings(receiveUserName);
-
-        // 이미 회의가 생성되어 있는지 확인합니다.
-        if (!applyUserMeetings.isEmpty() || !receiveUserMeetings.isEmpty()) {
-            List<MeetingSession> existingMeetings = new ArrayList<>();
-            existingMeetings.addAll(applyUserMeetings);
-            existingMeetings.addAll(receiveUserMeetings);
-
-            // 이미 있는 회의 중에서 applyUserName 또는 receiveUserName이 일치하는 경우를 찾습니다.
-            Optional<MeetingSession> existingMeeting = existingMeetings.stream()
-                    .filter(session -> session.getApplyUserName().equals(applyUserName) || session.getReceiveUserName().equals(receiveUserName))
-                    .findFirst();
-
-            if (existingMeeting.isPresent()) {
-                // 이미 생성된 회의를 찾았으므로 해당 회의의 정보로 CreateMeetingResponseDTO를 생성하여 반환합니다.
-                MeetingSession session = existingMeeting.get();
-                return CreateMeetingResponseDTO.builder()
-                        .externalMeetingId(session.getExternalMeetingId())
-                        .mediaPlacement(MediaPlacement.builder()
-                                .audioFallbackUrl(session.getAudioFallbackUrl())
-                                .audioHostUrl(session.getAudioHostUrl())
-                                .eventIngestionUrl(session.getEventIngestionUrl())
-                                .screenDataUrl(session.getScreenDataUrl())
-                                .screenSharingUrl(session.getScreenSharingUrl())
-                                .screenViewingUrl(session.getScreenViewingUrl())
-                                .signalingUrl(session.getSignalingUrl())
-                                .turnControlUrl(session.getTurnControllerUrl())
-                                .build())
-                        .mediaRegion(session.getMediaRegion())
-                        .meetingArn(session.getMeetingArn())
-                        .meetingId(session.getMeetingId())
-                        .applyUserName(session.getApplyUserName())
-                        .receiveUserName(session.getReceiveUserName())
-                        .build();
-            }
+        // 기존 미팅 확인
+        MeetingSession existingMeeting = findExistingMeeting(applyUserName, receiveUserName);
+        if (existingMeeting != null) {
+            return convertToMeetingResponseDTO(existingMeeting);
         }
 
-        CreateMeetingRequest request = CreateMeetingRequest.builder()
-                .clientRequestToken(UuidUtils.generateUuid())
-                .externalMeetingId(UuidUtils.generateUuid())
-                .mediaRegion("ap-northeast-2")
+        // 새 미팅 생성
+        CreateMeetingResponse createMeetingResponse = createChimeMeeting();
+        MeetingSession meetingSession = saveMeetingSession(createMeetingResponse, applyUserName, receiveUserName);
+
+        return convertToMeetingResponseDTO(meetingSession);
+    }
+
+    private MeetingSession findExistingMeeting(String applyUserName, String receiveUserName) {
+        List<MeetingSession> existingMeetings = new ArrayList<>();
+        existingMeetings.addAll(meetingSessionService.listMeetings(applyUserName));
+        existingMeetings.addAll(meetingSessionService.listMeetings(receiveUserName));
+
+        return existingMeetings.stream()
+                .filter(session -> session.getApplyUserName().equals(applyUserName) ||
+                        session.getReceiveUserName().equals(receiveUserName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private CreateMeetingResponse createChimeMeeting() {
+        try {
+            CreateMeetingRequest request = CreateMeetingRequest.builder()
+                    .clientRequestToken(UuidUtils.generateUuid())
+                    .externalMeetingId(UuidUtils.generateUuid())
+                    .mediaRegion(MEDIA_REGION)
+                    .build();
+            return chimeSdkMeetingsClient.createMeeting(request);
+        } catch (Exception e) {
+            throw new BadRequestException(MeetingExceptionType.NOT_CREATE_MEETING);
+        }
+    }
+
+    public CreateAttendeeResponseDTO createAttendee(String meetingId) {
+        String externalUserId = getCurrentUserId();
+
+        // 기존 참석자 확인
+        AttendeeSession existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId)
+                .orElse(null);
+        if (existingAttendee != null) {
+            return convertToAttendeeResponseDTO(existingAttendee);
+        }
+
+        // 새 참석자 생성
+        CreateAttendeeResponse createAttendeeResponse = createChimeAttendee(meetingId, externalUserId);
+        AttendeeSession attendeeSession = saveAttendeeSession(createAttendeeResponse, meetingId);
+
+        return convertToAttendeeResponseDTO(attendeeSession);
+    }
+
+    private CreateAttendeeResponse createChimeAttendee(String meetingId, String externalUserId) {
+        try {
+            CreateAttendeeRequest request = CreateAttendeeRequest.builder()
+                    .meetingId(meetingId)
+                    .externalUserId(externalUserId)
+                    .build();
+            return chimeSdkMeetingsClient.createAttendee(request);
+        } catch (Exception e) {
+            throw new BadRequestException(AttendeeExceptionType.NOT_CREATE_ATTENDEE);
+        }
+    }
+
+    public void deleteMeeting(String meetingId) {
+        try {
+            DeleteMeetingRequest request = DeleteMeetingRequest.builder()
+                    .meetingId(meetingId)
+                    .build();
+            chimeSdkMeetingsClient.deleteMeeting(request);
+
+            meetingSessionService.deleteByMeetingId(meetingId);
+            attendeeSessionService.deleteByMeetingId(meetingId);
+        } catch (Exception e) {
+            throw new BadRequestException(MeetingExceptionType.NOT_FOUND_MEETING);
+        }
+    }
+
+    public List<CreateMeetingResponseDTO> listMeetings() {
+        String currentUserId = getCurrentUserId();
+        return meetingSessionService.listMeetings(currentUserId).stream()
+                .map(this::convertToMeetingResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    private String getCurrentUserId() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    // DTO 변환 메서드들
+    private CreateMeetingResponseDTO convertToMeetingResponseDTO(MeetingSession session) {
+        return CreateMeetingResponseDTO.builder()
+                .externalMeetingId(session.getExternalMeetingId())
+                .mediaPlacement(convertToMediaPlacement(session))
+                .mediaRegion(session.getMediaRegion())
+                .meetingArn(session.getMeetingArn())
+                .meetingId(session.getMeetingId())
+                .applyUserName(session.getApplyUserName())
+                .receiveUserName(session.getReceiveUserName())
                 .build();
+    }
 
-        CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
+    private MediaPlacement convertToMediaPlacement(MeetingSession session) {
+        return MediaPlacement.builder()
+                .audioFallbackUrl(session.getAudioFallbackUrl())
+                .audioHostUrl(session.getAudioHostUrl())
+                .eventIngestionUrl(session.getEventIngestionUrl())
+                .screenDataUrl(session.getScreenDataUrl())
+                .screenSharingUrl(session.getScreenSharingUrl())
+                .screenViewingUrl(session.getScreenViewingUrl())
+                .signalingUrl(session.getSignalingUrl())
+                .turnControlUrl(session.getTurnControllerUrl())
+                .build();
+    }
 
+    private CreateAttendeeResponseDTO convertToAttendeeResponseDTO(AttendeeSession session) {
+        return CreateAttendeeResponseDTO.builder()
+                .attendeeId(session.getAttendeeId())
+                .externalUserId(session.getExternalUserId())
+                .joinToken(session.getJoinToken())
+                .build();
+    }
+
+    private MeetingSession saveMeetingSession(CreateMeetingResponse response, String applyUserName, String receiveUserName) {
         MeetingSession meetingSession = MeetingSession.builder()
-                .externalMeetingId(createMeetingResponse.meeting().externalMeetingId())
-                .mediaRegion(createMeetingResponse.meeting().mediaRegion())
-                .meetingArn(createMeetingResponse.meeting().meetingArn())
-                .meetingId(createMeetingResponse.meeting().meetingId())
-                .audioFallbackUrl(createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl())
-                .audioHostUrl(createMeetingResponse.meeting().mediaPlacement().audioHostUrl())
-                .eventIngestionUrl(createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl())
-                .screenDataUrl(createMeetingResponse.meeting().mediaPlacement().screenDataUrl())
-                .screenSharingUrl(createMeetingResponse.meeting().mediaPlacement().screenSharingUrl())
-                .screenViewingUrl(createMeetingResponse.meeting().mediaPlacement().screenViewingUrl())
-                .signalingUrl(createMeetingResponse.meeting().mediaPlacement().signalingUrl())
-                .turnControllerUrl(createMeetingResponse.meeting().mediaPlacement().turnControlUrl())
+                .externalMeetingId(response.meeting().externalMeetingId())
+                .mediaRegion(response.meeting().mediaRegion())
+                .meetingArn(response.meeting().meetingArn())
+                .meetingId(response.meeting().meetingId())
+                .audioFallbackUrl(response.meeting().mediaPlacement().audioFallbackUrl())
+                .audioHostUrl(response.meeting().mediaPlacement().audioHostUrl())
+                .eventIngestionUrl(response.meeting().mediaPlacement().eventIngestionUrl())
+                .screenDataUrl(response.meeting().mediaPlacement().screenDataUrl())
+                .screenSharingUrl(response.meeting().mediaPlacement().screenSharingUrl())
+                .screenViewingUrl(response.meeting().mediaPlacement().screenViewingUrl())
+                .signalingUrl(response.meeting().mediaPlacement().signalingUrl())
+                .turnControllerUrl(response.meeting().mediaPlacement().turnControlUrl())
                 .applyUserName(applyUserName)
                 .receiveUserName(receiveUserName)
                 .build();
 
-        meetingSessionService.save(meetingSession);
-
-        return CreateMeetingResponseDTO.builder()
-                .externalMeetingId(meetingSession.getExternalMeetingId())
-                .mediaPlacement(MediaPlacement.builder()
-                        .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
-                        .audioHostUrl(meetingSession.getAudioHostUrl())
-                        .eventIngestionUrl(meetingSession.getEventIngestionUrl())
-                        .screenDataUrl(meetingSession.getScreenDataUrl())
-                        .screenSharingUrl(meetingSession.getScreenSharingUrl())
-                        .screenViewingUrl(meetingSession.getScreenViewingUrl())
-                        .signalingUrl(meetingSession.getSignalingUrl())
-                        .turnControlUrl(meetingSession.getTurnControllerUrl())
-                        .build())
-                .mediaRegion(meetingSession.getMediaRegion())
-                .meetingArn(meetingSession.getMeetingArn())
-                .meetingId(meetingSession.getMeetingId())
-                .applyUserName(meetingSession.getApplyUserName())
-                .receiveUserName(meetingSession.getReceiveUserName())
-                .build();
+        return meetingSessionService.save(meetingSession);
     }
 
-    // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
-    public CreateAttendeeResponseDTO createAttendee(String meetingID) {
-
-        String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        // 이미 존재하는 참여자인지 확인
-        Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
-        if (existingAttendee.isPresent()) {
-            AttendeeSession session = existingAttendee.get();
-            return CreateAttendeeResponseDTO.builder()
-                    .attendeeId(session.getAttendeeId())
-                    .externalUserId(session.getExternalUserId())
-                    .joinToken(session.getJoinToken())
-                    .build();
-        }
-
-        //externalUserId 내 아이디로 설정
-        CreateAttendeeRequest request = CreateAttendeeRequest.builder()
-                .meetingId(meetingID)
-                .externalUserId(externalUserId)
-                .build();
-
-        CreateAttendeeResponse createAttendeeResponse = chimeSdkMeetingsClient.createAttendee(request);
-
-        String attendeeId = createAttendeeResponse.attendee().attendeeId();
-        String joinToken = createAttendeeResponse.attendee().joinToken();
-
-        CreateAttendeeResponseDTO createAttendeeResponseDTO = CreateAttendeeResponseDTO.builder()
-                .attendeeId(attendeeId)
-                .externalUserId(externalUserId)
-                .joinToken(joinToken)
-                .build();
-
+    private AttendeeSession saveAttendeeSession(CreateAttendeeResponse response, String meetingId) {
         AttendeeSession attendeeSession = AttendeeSession.builder()
-                .attendeeId(attendeeId)
-                .externalUserId(externalUserId)
-                .joinToken(joinToken)
-                .meetingId(meetingID)
-                .build();
-        attendeeSessionService.save(attendeeSession);
-
-        return createAttendeeResponseDTO;
-    }
-
-    //meetingSession 및 방에 참여중인 attendeeSession 삭제
-    public void deleteMeeting(String meetingId) {
-
-        DeleteMeetingRequest deleteMeetingRequest = DeleteMeetingRequest.builder()
+                .attendeeId(response.attendee().attendeeId())
+                .externalUserId(getCurrentUserId())
+                .joinToken(response.attendee().joinToken())
                 .meetingId(meetingId)
                 .build();
-        chimeSdkMeetingsClient.deleteMeeting(deleteMeetingRequest);
-
-        meetingSessionService.deleteByMeetingId(meetingId);
-
-        attendeeSessionService.deleteByMeetingId(meetingId);
-    }
-
-    // 열려있는 내 모든 회의 조회
-    public List<CreateMeetingResponseDTO> listMeetings() {
-        List<MeetingSession> meetingSessions = meetingSessionService.listMeetings(SecurityContextHolder.getContext().getAuthentication().getName());
-        List<CreateMeetingResponseDTO> responseDTOs = new ArrayList<>();
-
-        for (MeetingSession meetingSession : meetingSessions) {
-            MediaPlacement mediaPlacement = MediaPlacement.builder()
-                    .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
-                    .audioHostUrl(meetingSession.getAudioHostUrl())
-                    .eventIngestionUrl(meetingSession.getEventIngestionUrl())
-                    .screenDataUrl(meetingSession.getScreenDataUrl())
-                    .screenSharingUrl(meetingSession.getScreenSharingUrl())
-                    .screenViewingUrl(meetingSession.getScreenViewingUrl())
-                    .signalingUrl(meetingSession.getSignalingUrl())
-                    .turnControlUrl(meetingSession.getTurnControllerUrl())
-                    .build();
-
-            CreateMeetingResponseDTO responseDTO = CreateMeetingResponseDTO.builder()
-                    .externalMeetingId(meetingSession.getExternalMeetingId())
-                    .mediaPlacement(mediaPlacement)
-                    .mediaRegion(meetingSession.getMediaRegion())
-                    .meetingArn(meetingSession.getMeetingArn())
-                    .meetingId(meetingSession.getMeetingId())
-                    .applyUserName(meetingSession.getApplyUserName())
-                    .receiveUserName(meetingSession.getReceiveUserName())
-                    .build();
-            responseDTOs.add(responseDTO);
-        }
-        return responseDTOs;
+        attendeeSessionService.save(attendeeSession);
+        return attendeeSession;
     }
 }
-
-
-
-

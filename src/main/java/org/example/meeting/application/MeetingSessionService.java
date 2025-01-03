@@ -18,9 +18,9 @@ public class MeetingSessionService {
 
     private final MeetingSessionRepository meetingSessionRepository;
 
-    public void save(MeetingSession meetingSession) {
+    public MeetingSession save(MeetingSession meetingSession) {
         try {
-            meetingSessionRepository.save(meetingSession);
+            return meetingSessionRepository.save(meetingSession);
         } catch (Exception e) {
             throw new MeetingSessionCreationException("Error saving meeting session: " + e.getMessage());
         }
