@@ -1,7 +1,12 @@
 package org.example.reservation.application;
 
 import lombok.RequiredArgsConstructor;
+import org.example.global.exception.type.BadRequestException;
+import org.example.global.exception.type.ForbiddenException;
+import org.example.global.exception.type.NotFoundException;
+import org.example.reservation.exception.ReservationExceptionType;
 import org.example.reservation.exception.ReservationNotFoundException;
+import org.example.user.exception.UserExceptionType;
 import org.example.user.exception.UserNotFoundException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
@@ -25,84 +30,106 @@ public class ReservationService {
     private final UserRepository userRepository;
 
     public List<ReservationDTO> getMyReservation() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Reservation> reservation= reservationRepository.findByApplyUserUsernameOrReceiveUserUsername(userName, userName);
-        List<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservation);
-        return reservationDtoList;
+        String userName = getCurrentUsername();
+        List<Reservation> reservations = reservationRepository.findByApplyUserUsernameOrReceiveUserUsername(userName, userName);
+        if (reservations.isEmpty()) {
+            throw new NotFoundException(ReservationExceptionType.NOT_FOUND_RESERVATION);
+        }
+        return new ReservationDTO().toDtoList(reservations);
     }
 
-    //예약신청
     public void createReservation(CreateReservationRequestDTO createReservationRequestDTO) {
+        String applyUserName = getCurrentUsername();
+        User applyUser = findUserByUsername(applyUserName);
+        User receiveUser = findUserByUsername(createReservationRequestDTO.getReceiveUserName());
 
-        String applyUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User applyUser = userRepository.findByUsername(applyUserName)
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
-
-        User receiveUser = userRepository.findByUsername(createReservationRequestDTO.getReceiveUserName())
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
-
-        Reservation reservation = Reservation.builder()
-                .applyUser(applyUser)
-                .receiveUser(receiveUser)
-                .content(createReservationRequestDTO.getContent())
-                .startTime(createReservationRequestDTO.getStartTime())
-                .endTime(createReservationRequestDTO.getEndTime())
-                .reservationStatus(ReservationStatus.PROGRESSING)
-                .receiveUser(receiveUser)
-                .build();
-        reservationRepository.save(reservation);
+        try {
+            Reservation reservation = Reservation.builder()
+                    .applyUser(applyUser)
+                    .receiveUser(receiveUser)
+                    .content(createReservationRequestDTO.getContent())
+                    .startTime(createReservationRequestDTO.getStartTime())
+                    .endTime(createReservationRequestDTO.getEndTime())
+                    .reservationStatus(ReservationStatus.PROGRESSING)
+                    .build();
+            reservationRepository.save(reservation);
+        } catch (Exception e) {
+            throw new BadRequestException(ReservationExceptionType.NOT_CREATE_RESERVATION);
+        }
     }
 
-    // 신청 받은 유저가 신청 받은 매칭 승인
     public void approveReservation(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-        authorizeReservationReceiveUser(reservationId);
-        reservation.approve();
-        reservationRepository.save(reservation);
+        Reservation reservation = findReservationById(reservationId);
+        validateReceiveUser(reservationId);
+
+        try {
+            reservation.approve();
+            reservationRepository.save(reservation);
+        } catch (Exception e) {
+            throw new BadRequestException(ReservationExceptionType.NOT_APPROVE_RESERVATION);
+        }
     }
 
-    // 신청 받은 유저가 신청 받은 매칭 거절
     public void refuseReservation(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-        authorizeReservationReceiveUser(reservationId);
-        reservation.refuse();
-        reservationRepository.save(reservation);
+        Reservation reservation = findReservationById(reservationId);
+        validateReceiveUser(reservationId);
+
+        try {
+            reservation.refuse();
+            reservationRepository.save(reservation);
+        } catch (Exception e) {
+            throw new BadRequestException(ReservationExceptionType.NOT_REFUSE_RESERVATION);
+        }
     }
 
-    // 신청자가 본인 신청 취소
     public void deleteReservation(Long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-        authorizeReservationApplyUser(reservationId);
-        reservationRepository.delete(reservation);
+        Reservation reservation = findReservationById(reservationId);
+        validateApplyUser(reservationId);
+
+        try {
+            reservationRepository.delete(reservation);
+        } catch (Exception e) {
+            throw new BadRequestException(ReservationExceptionType.NOT_DELETE_RESERVATION);
+        }
     }
 
-    // 예약삭제
     public void deleteReservationByUserName(String userName) {
-        reservationRepository.deleteByApplyUserUsernameOrReceiveUserUsername(userName, userName);
+        try {
+            reservationRepository.deleteByApplyUserUsernameOrReceiveUserUsername(userName, userName);
+        } catch (Exception e) {
+            throw new BadRequestException(ReservationExceptionType.NOT_DELETE_RESERVATION);
+        }
     }
 
-    // 예약 신청한 유저인지 확인
-     private void authorizeReservationApplyUser(Long reservationId) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-
-         if (!reservation.getApplyUser().getUsername().equals(userName)) {
-             throw new IllegalArgumentException("not authorized");
-         }
+    private String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
-    // 예약 신청받은 유저인지 확인
-    private void authorizeReservationReceiveUser(Long reservationId) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+    private User findUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(UserExceptionType.NOT_FOUND_USER));
+    }
+
+    private Reservation findReservationById(Long reservationId) {
+        return reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new NotFoundException(ReservationExceptionType.NOT_FOUND_RESERVATION));
+    }
+
+    private void validateApplyUser(Long reservationId) {
+        String userName = getCurrentUsername();
+        Reservation reservation = findReservationById(reservationId);
+
+        if (!reservation.getApplyUser().getUsername().equals(userName)) {
+            throw new ForbiddenException(ReservationExceptionType.NOT_AUTHORIZED_APPLY_USER);
+        }
+    }
+
+    private void validateReceiveUser(Long reservationId) {
+        String userName = getCurrentUsername();
+        Reservation reservation = findReservationById(reservationId);
 
         if (!reservation.getReceiveUser().getUsername().equals(userName)) {
-            throw new IllegalArgumentException("not authorized");
+            throw new ForbiddenException(ReservationExceptionType.NOT_AUTHORIZED_APPLY_USER);
         }
     }
 }
