@@ -2,6 +2,9 @@ package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.global.exception.type.BadRequestException;
+import org.example.global.exception.type.NotFoundException;
+import org.example.user.exception.UserExceptionType;
 import org.example.user.exception.UserNotFoundException;
 import org.example.meeting.application.AttendeeSessionService;
 import org.example.meeting.application.MeetingSessionService;
@@ -72,12 +75,12 @@ public class UserService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Unexpected user"));
+                .orElseThrow(() -> new NotFoundException(UserExceptionType.NOT_FOUND_USER));
     }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
+                .orElseThrow(() -> new NotFoundException(UserExceptionType.NOT_FOUND_USER));
     }
     public List<User> findAll() {
         return userRepository.findAll();
@@ -86,12 +89,19 @@ public class UserService {
     @Transactional
     public void update(String username, String accessToken) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
+                .orElseThrow(() -> new NotFoundException(UserExceptionType.NOT_FOUND_USER));
         user.setAccessToken(accessToken);
     }
 
     public void deleteUserById(Long userId) {
-        userRepository.deleteById(userId);
+        try {
+            if (!userRepository.existsById(userId)) {
+                throw new NotFoundException(UserExceptionType.NOT_FOUND_USER);
+            }
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            throw new BadRequestException(UserExceptionType.NOT_DELETE_USER);
+        }
     }
 
     public Flux<GithubProfileResponse> fetchUserInfo(String accessToken) {
@@ -189,7 +199,11 @@ public class UserService {
                 .build()).getId();
     }
 
-    public void saveUser(User user){
-        userRepository.save(user);
+    public void saveUser(User user) {
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new BadRequestException(UserExceptionType.NOT_CREATE_USER);
+        }
     }
 }
