@@ -1,10 +1,11 @@
 package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.MeetingSessionCreationException;
-import org.example.exception.MeetingSessionDeletionException;
-import org.example.exception.MeetingSessionNotFoundException;
+import org.example.exception.type.MeetingSessionCreationException;
+import org.example.exception.type.MeetingSessionNotFoundException;
+import org.example.exception.type.NotFoundException;
 import org.example.meeting.domain.MeetingSession;
+import org.example.meeting.exception.MeetingExceptionType;
 import org.example.meeting.repository.MeetingSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,36 +29,25 @@ public class MeetingSessionService {
     }
 
     public List<MeetingSession> listMeetings(String userName) {
-        try {
-            return meetingSessionRepository.findByApplyUserNameOrReceiveUserName(userName);
-        } catch (Exception e) {
-            throw new MeetingSessionNotFoundException("Error listing meeting sessions for user: " + userName);
+        List<MeetingSession> meetingSessions = meetingSessionRepository.findByApplyUserNameOrReceiveUserName(userName);
+
+        if (meetingSessions.isEmpty()) {
+            throw new NotFoundException(MeetingExceptionType.NOT_FOUND_MEETING);
         }
+        return meetingSessions;
     }
 
     public void deleteByMeetingId(String meetingId) {
-        Optional<MeetingSession> meetingSessionOptional = meetingSessionRepository.findByMeetingId(meetingId);
-        if (meetingSessionOptional.isPresent()) {
+        MeetingSession meetingSession = meetingSessionRepository.findByMeetingId(meetingId).orElseThrow(
+                () -> new NotFoundException(MeetingExceptionType.NOT_FOUND_MEETING));
+
             meetingSessionRepository.deleteByMeetingId(meetingId);
-        } else {
-            throw new MeetingSessionNotFoundException("Meeting session with ID: " + meetingId + " not found.");
         }
-    }
 
     public void deleteByMeetingSessionId(Long meetingSessionId) {
-        Optional<MeetingSession> meetingSessionOptional = meetingSessionRepository.findById(meetingSessionId);
-        if (meetingSessionOptional.isPresent()) {
-            meetingSessionRepository.deleteById(meetingSessionId);
-        } else {
-            throw new MeetingSessionNotFoundException("Meeting session with ID: " + meetingSessionId + " not found.");
-        }
-    }
+        MeetingSession meetingSession = meetingSessionRepository.findById(meetingSessionId).orElseThrow(
+                () -> new NotFoundException(MeetingExceptionType.NOT_FOUND_MEETING));
 
-    public Optional<MeetingSession> findByMeetingId(String meetingId) {
-        try {
-            return meetingSessionRepository.findByMeetingId(meetingId);
-        } catch (Exception e) {
-            throw new MeetingSessionNotFoundException("Error finding meeting session with meeting ID: " + meetingId);
-        }
+        meetingSessionRepository.deleteById(meetingSessionId);
     }
 }

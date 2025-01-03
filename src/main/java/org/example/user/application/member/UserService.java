@@ -2,7 +2,7 @@ package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.exception.UserNotFoundException;
+import org.example.exception.type.UserNotFoundException;
 import org.example.meeting.application.AttendeeSessionService;
 import org.example.meeting.application.MeetingSessionService;
 import org.example.meeting.domain.MeetingSession;

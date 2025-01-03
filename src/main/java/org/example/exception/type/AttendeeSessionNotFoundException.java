@@ -1,12 +1,8 @@
-package org.example.exception;
+package org.example.exception.type;
 
 public class AttendeeSessionNotFoundException extends RuntimeException {
 
     public AttendeeSessionNotFoundException(String message) {
         super(message);
-    }
-
-    public AttendeeSessionNotFoundException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

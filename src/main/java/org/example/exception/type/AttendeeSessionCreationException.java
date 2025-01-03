@@ -1,12 +1,8 @@
-package org.example.exception;
+package org.example.exception.type;
 
 public class AttendeeSessionCreationException extends RuntimeException {
 
     public AttendeeSessionCreationException(String message) {
         super(message);
-    }
-
-    public AttendeeSessionCreationException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

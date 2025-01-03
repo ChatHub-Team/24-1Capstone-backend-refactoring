@@ -1,7 +1,7 @@
 package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.AttendeeAlreadyExistsException;
+import org.example.global.common.UuidUtils;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
@@ -64,8 +64,8 @@ public class ChimeService {
         }
 
         CreateMeetingRequest request = CreateMeetingRequest.builder()
-                .clientRequestToken(getRandomString())
-                .externalMeetingId(getRandomString())
+                .clientRequestToken(UuidUtils.generateUuid())
+                .externalMeetingId(UuidUtils.generateUuid())
                 .mediaRegion("ap-northeast-2")
                 .build();
 
@@ -196,22 +196,6 @@ public class ChimeService {
             responseDTOs.add(responseDTO);
         }
         return responseDTOs;
-    }
-
-    public static String getRandomString() {
-        return getRandomString(2, 64);
-    }
-
-    public static String getRandomString(int minLength, int maxLength) {
-        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
-        Random random = new Random();
-        int length = random.nextInt(maxLength - minLength + 1) + minLength;
-        StringBuilder sb = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            sb.append(characters.charAt(randomIndex));
-        }
-        return sb.toString();
     }
 }
 

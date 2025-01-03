@@ -1,8 +1,8 @@
 package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.AttendeeSessionCreationException;
-import org.example.exception.AttendeeSessionNotFoundException;
+import org.example.exception.type.AttendeeSessionCreationException;
+import org.example.exception.type.AttendeeSessionNotFoundException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.repository.AttendeeSessionRepository;
 import org.springframework.stereotype.Service;

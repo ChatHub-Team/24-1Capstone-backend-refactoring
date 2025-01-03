@@ -1,21 +1,15 @@
 package org.example.reservation.application;
 
 import lombok.RequiredArgsConstructor;
-import org.example.exception.ReservationNotFoundException;
-import org.example.exception.ReservationNotWaitingException;
-import org.example.exception.UserNotFoundException;
+import org.example.exception.type.ReservationNotFoundException;
+import org.example.exception.type.UserNotFoundException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
 import org.example.reservation.domain.entity.ReservationStatus;
 import org.example.reservation.repository.ReservationRepository;
-import org.example.user.application.member.UserService;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.member.UserRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

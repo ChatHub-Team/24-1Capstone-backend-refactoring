@@ -1,4 +1,4 @@
-package org.example.exception;
+package org.example.exception.type;
 
 public class MeetingSessionCreationException extends RuntimeException {
 
