@@ -3,6 +3,7 @@ package org.example.meeting.presentation;
 import lombok.RequiredArgsConstructor;
 import org.example.meeting.application.ChimeService;
 import org.example.meeting.domain.dto.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +25,9 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @PostMapping("/api/meetings")
-    public CreateMeetingResponseDTO createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
-       return chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
+    public ResponseEntity<CreateMeetingResponseDTO> createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
+        CreateMeetingResponseDTO response = chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "해당 회의에 참가자 생성", description = "특정 회의에 참가자를 생성")
@@ -36,8 +38,9 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @PostMapping("/api/meetings/{meetingId}/attendees")
-    public CreateAttendeeResponseDTO createAttendee(@PathVariable String meetingId) {
-        return chimeService.createAttendee(meetingId);
+    public ResponseEntity<CreateAttendeeResponseDTO> createAttendee(@PathVariable String meetingId) {
+        CreateAttendeeResponseDTO response = chimeService.createAttendee(meetingId);
+        return ResponseEntity.status(201).body(response);
     }
 
     @Operation(summary = "회의 삭제 API", description = "특정 회의를 삭제")
@@ -48,8 +51,9 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @DeleteMapping("/api/meetings/{meetingId}")
-    public void deleteMeeting(@PathVariable String meetingId) {
+    public ResponseEntity<Void> deleteMeeting(@PathVariable String meetingId) {
         chimeService.deleteMeeting(meetingId);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "열려 있는 모든 회의 조회 API", description = "현재 열려 있는 모든 회의를 조회")
@@ -58,7 +62,8 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @GetMapping("/api/meetings")
-    public List<CreateMeetingResponseDTO> listMeetings() {
-        return chimeService.listMeetings();
+    public ResponseEntity<List<CreateMeetingResponseDTO>> listMeetings() {
+        List<CreateMeetingResponseDTO> response = chimeService.listMeetings();
+        return ResponseEntity.ok(response);
     }
 }
