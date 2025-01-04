@@ -16,17 +16,11 @@ public class ControllerLogAspect {
     public Object logController(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
-        StopWatch stopWatch = new StopWatch();
 
-        stopWatch.start();
         log.info("[Controller] {}.{} => request: {}",
                 className, methodName, joinPoint.getArgs());
 
         Object result = joinPoint.proceed();
-
-        stopWatch.stop();
-        log.info("[Controller] {}.{} => response: {}, time: {}ms",
-                className, methodName, result, stopWatch.getTotalTimeMillis());
 
         return result;
     }
