@@ -15,9 +15,17 @@ public class AttendeeSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
+
+    @Column(name = "attendee_id", nullable = false, unique = true)
     private String attendeeId;
+
+    @Column(name = "external_user_id", nullable = false)
     private String externalUserId;
+
+    @Column(name = "join_token")
     private String joinToken;
+
+    @Column(name = "meeting_id")
     private String meetingId;
 
     @Builder

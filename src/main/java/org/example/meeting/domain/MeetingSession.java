@@ -16,19 +16,46 @@ public class MeetingSession {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "external_meeting_id", nullable = false, unique = true)
     private String externalMeetingId;
+
+    @Column(name = "audio_fallback_url", nullable = false)
     private String audioFallbackUrl;
+
+    @Column(name = "audio_host_url", nullable = false)
     private String audioHostUrl;
+
+    @Column(name = "event_ingestion_url", nullable = false)
     private String eventIngestionUrl;
+
+    @Column(name = "screen_data_url", nullable = false)
     private String screenDataUrl;
+
+    @Column(name = "screen_sharing_url", nullable = false)
     private String screenSharingUrl;
+
+    @Column(name = "screen_viewing_url", nullable = false)
     private String screenViewingUrl;
+
+    @Column(name = "signaling_url", nullable = false)
     private String signalingUrl;
+
+    @Column(name = "turn_controller_url", nullable = false)
     private String turnControllerUrl;
+
+    @Column(name = "media_region", nullable = false)
     private String mediaRegion;
+
+    @Column(name = "meeting_arn", nullable = false, unique = true)
     private String meetingArn;
+
+    @Column(name = "meeting_id", nullable = false, unique = true)
     private String meetingId;
+
+    @Column(name = "apply_user_name", nullable = false)
     private String applyUserName;
+
+    @Column(name = "receive_user_name", nullable = false)
     private String receiveUserName;
 
     @Builder
