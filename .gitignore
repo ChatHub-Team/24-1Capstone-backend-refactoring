@@ -25,7 +25,10 @@ bin/
 *.iws
 *.iml
 *.ipr
+# 모든 .yml 파일 무시
 *.yml
+# Docker Compose 파일 예외 추가
+!docker-compose.yml
 *.properties
 out/
 !**/src/main/**/out/
@@ -33,18 +36,16 @@ out/
 
 ### NetBeans ###
 /nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
 ### VS Code ###
 .vscode/
 
 .gitattributes
 # Elastic Beanstalk Files
-#.platform/*
-#.ebextensions/*
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
