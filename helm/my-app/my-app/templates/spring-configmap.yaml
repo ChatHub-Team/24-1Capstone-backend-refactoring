@@ -1,0 +1,63 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-config
+data:
+  application.yml: |
+    server:
+      port: 8080
+      servlet:
+        context-path: /
+        encoding:
+          charset: UTF-8
+          enabled: true
+          force: true
+
+    aws:
+      credentials:
+        access-key: YOUR_AWS_ACCESS_KEY_ID
+        secret-key: YOUR_AWS_SECRET_ACCESS_KEY
+
+    spring:
+      datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+      jpa:
+        hibernate:
+          ddl-auto: update  # 첫 배포 시 'create', 그 후에는 'update' 권장
+          naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.MySQL8Dialect
+            format_sql: true
+            show_sql: true
+            default_batch_fetch_size: 100
+        open-in-view: false
+
+      sql:
+        init:
+          mode: never
+
+      security:
+        oauth2:
+          client:
+            registration:
+              google:
+                client-id: 713024994964-nv6vm5339tr2pi46lmkmub3th4ibqvph.apps.googleusercontent.com
+                client-secret: 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
+                scope:
+                  - email
+                  - profile
+              github:
+                client-id: ac76352f5e548d31d183
+                client-secret: 9e7f2dbdc055af2705e35636b745977da4ed5f8d
+                scope:
+
+    jwt:
+      issuer: ajufresh@gmail.com
+      secret_key: study-springboot

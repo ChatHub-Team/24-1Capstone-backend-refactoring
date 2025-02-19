@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-deployment
+  labels:
+    app: spring
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      containers:
+        - name: spring
+          image: "{{ .Values.spring.image.repository }}:{{ .Values.spring.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.spring.containerPort }}
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "400m"
+            limits:
+              memory: "500Mi"
+              cpu: "800m"
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application.yml"
+            - name: DB_URL
+              value: "{{ .Values.spring.datasource.url }}"
+            - name: DB_USERNAME
+              value: "{{ .Values.spring.datasource.username }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.spring.datasource.password }}"
+
+          volumeMounts:
+            - name: spring-config
+              mountPath: /config/application.yml
+              subPath: application.yml
+
+      volumes:
+        - name: spring-config
+          configMap:
+            name: spring-config
