@@ -13,6 +13,13 @@ spring:
     url: jdbc:mysql://<RDS_ENDPOINT>:3306/mydb
     username: yourusername
     password: yourpassword
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: "your-client-id"
+            client-secret: "your-client-secret"
 
 front:
   image:

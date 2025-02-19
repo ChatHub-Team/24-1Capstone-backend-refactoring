@@ -1,0 +1,173 @@
+[33mcommit 9da6058f9062eca1c9c5468713364c1700ccb5db[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 19 18:56:12 2025 +0900
+
+    fix: 설정파일 변경
+
+[33mcommit cde1e2b79d3c87770b52edd58a4e581af4b1315d[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 19 18:53:45 2025 +0900
+
+    fix: yaml 변경
+
+[33mcommit dba07e17c72318bda406f43836be861849e63f59[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 19 18:51:00 2025 +0900
+
+    feat: 쿠버네티스 헬름 배포 파일 구현
+
+[33mcommit 245361252a315dd7fd0def0aecac8ff416399366[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 19 12:46:15 2025 +0900
+
+    feat: healthcheck 추가구현
+
+[33mcommit 0b6ac6860070c7fd98015ca8b5927f0a6faaf729[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Feb 15 17:52:30 2025 +0900
+
+    feat: aop 제거
+
+[33mcommit e4bcbba3edc38aff517353e93f1b7aefa786e7af[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Feb 15 13:03:50 2025 +0900
+
+    feat: healthcheck ì¶가
+
+[33mcommit 146635c23bbfa2d0f2ade3775bfb667bbf30026b[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 5 13:55:03 2025 +0900
+
+    Force add gradle-wrapper.properties
+
+[33mcommit 2db5b10e55579320a45c0eaa93e1b618efe6e65c[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Feb 5 13:46:31 2025 +0900
+
+    fix: gitignore 추가
+
+[33mcommit 5d34b9e82f8f838169038302c8229e32fa255fee[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Jan 8 20:11:44 2025 +0900
+
+    feat: docker-compose.yml 설정파일 추가
+
+[33mcommit 795a0a6c8a9bd44d7d027ff5935da79db424b981[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Tue Jan 7 17:57:23 2025 +0900
+
+    feat: docker 설정 구현
+
+[33mcommit 9bc2b640836f982fc5c7f618c0480ebfa7b5fa08[m[33m ([m[1;31morigin/refactor/codebase[m[33m, [m[1;32mrefactor/codebase[m[33m)[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Jan 4 15:41:54 2025 +0900
+
+    refactor: ãDTO 대신 ResponeEntity 로 반환 변경
+
+[33mcommit 8d6c5c6e433613263c9054f8ba18790d18c20a10[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Jan 4 15:33:21 2025 +0900
+
+    feat: 검dto 검증 기능 추가
+
+[33mcommit fd4e36eadd938f6ddd3ce2077ff2b58c94818064[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Jan 4 15:18:30 2025 +0900
+
+    feat: 엔티티 제약조건 ì추가
+
+[33mcommit a836a8287f751f57546ad187a737c58d97489941[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Sat Jan 4 14:50:18 2025 +0900
+
+    feat: 성능 측정 메ì기능 제거
+
+[33mcommit a66fa08512c2d4029f2c20e1b8681c555cc6bf92[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 15:41:38 2025 +0900
+
+    refactor: 일반 Exception 응ë예외상태 코드 사용
+
+[33mcommit a536c2f943b820d901d1ff36d535863bf48d3c60[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 15:20:13 2025 +0900
+
+    feat: 레이어 별 AOP  기능 구현
+
+[33mcommit 87b5681cb96d98234950865ad51fa50e7ff9d0e4[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 15:03:18 2025 +0900
+
+    refactor: user 관련 예외처리 리펙토링
+
+[33mcommit aca849f182a8f281a2f6b6125b8082856048b1e8[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:57:28 2025 +0900
+
+    feat: 기ì예약 êê¸ê관련 기존 예외클래스 제거
+
+[33mcommit 5a0f11dfc63e150f8a42527440787d65d63a9cfa[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:56:29 2025 +0900
+
+    refactor: 예외 처리 리펙토링
+
+[33mcommit 2abcd465ec664810029af74c8631e657804754bc[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:43:00 2025 +0900
+
+    refactor: MeetingSession 관련  클레클래스 리펙토링
+
+[33mcommit f6a62b2c09b619b397bffe13c53e19380a47d122[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:39:43 2025 +0900
+
+    refactor: C ë¯화상채팅 관련 서비스레 ì레이어 í리펙토링
+
+[33mcommit db28bd60618951cf8e608e9219a2fa4aed26abab[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:22:37 2025 +0900
+
+    refactor: attendeesessionService ì코드 리펙토링
+
+[33mcommit 570d20e8375576891aead82d2ddb4eabe94bda2d[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:08:08 2025 +0900
+
+    feat: user 및 reservaion 예외타입 추가
+
+[33mcommit b4805bc11b2deb3b32d2b29e0f6b23dc43fd7ab6[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:04:39 2025 +0900
+
+    feat: 회의예외타입 추가
+
+[33mcommit 88e2da345fa0765bf3c71896cf9c184cf79e8d4c[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 14:02:56 2025 +0900
+
+    refactor: ãexception 폴더 global 폴더 하위로 변경
+
+[33mcommit 06e4f7d23aac155509b550689592c85fa71feb0d[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Fri Jan 3 13:19:23 2025 +0900
+
+    refacotr: 예외구구조 변경
+
+[33mcommit 4f3dc96cde13e131dd1ce3db5043ecd4fb0da7af[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Thu Jan 2 16:23:01 2025 +0900
+
+    refactor: 공백제거 및 폴더 구조 변경
+
+[33mcommit c95d90469be0749335f4259280d59a2cf5fc9eb0[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Thu Jan 2 15:43:35 2025 +0900
+
+    refactor: global 폴더 셍성 및 폴더 구조 변경
+
+[33mcommit 174f4d7b04858f46d9a2603f9d5ce22f9616a4e4[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Thu Jan 2 15:03:09 2025 +0900
+
+    feat: 원본 프로젝트 setup

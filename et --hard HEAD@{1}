@@ -1,0 +1,34 @@
+[33m2453612[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: reset: moving to HEAD~3
+[33m9da6058[m HEAD@{1}: commit: fix: 설정파일 변경
+[33mcde1e2b[m HEAD@{2}: commit: fix: yaml 변경
+[33mdba07e1[m HEAD@{3}: commit: feat: 쿠버네티스 헬름 배포 파일 구현
+[33m2453612[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{4}: commit: feat: healthcheck 추가구현
+[33m0b6ac68[m HEAD@{5}: commit: feat: aop 제거
+[33me4bcbba[m HEAD@{6}: commit: feat: healthcheck ì¶가
+[33m146635c[m HEAD@{7}: commit: Force add gradle-wrapper.properties
+[33m2db5b10[m HEAD@{8}: commit: fix: gitignore 추가
+[33m5d34b9e[m HEAD@{9}: commit: feat: docker-compose.yml 설정파일 추가
+[33m795a0a6[m HEAD@{10}: commit: feat: docker 설정 구현
+[33m9bc2b64[m[33m ([m[1;31morigin/refactor/codebase[m[33m, [m[1;32mrefactor/codebase[m[33m)[m HEAD@{11}: reset: moving to refactor/codebase
+[33m174f4d7[m HEAD@{12}: checkout: moving from refactor/codebase to main
+[33m9bc2b64[m[33m ([m[1;31morigin/refactor/codebase[m[33m, [m[1;32mrefactor/codebase[m[33m)[m HEAD@{13}: commit: refactor: ãDTO 대신 ResponeEntity 로 반환 변경
+[33m8d6c5c6[m HEAD@{14}: commit: feat: 검dto 검증 기능 추가
+[33mfd4e36e[m HEAD@{15}: commit: feat: 엔티티 제약조건 ì추가
+[33ma836a82[m HEAD@{16}: commit: feat: 성능 측정 메ì기능 제거
+[33ma66fa08[m HEAD@{17}: commit: refactor: 일반 Exception 응ë예외상태 코드 사용
+[33ma536c2f[m HEAD@{18}: commit: feat: 레이어 별 AOP 기능 구현
+[33m87b5681[m HEAD@{19}: commit: refactor: user 관련 예외처리 리펙토링
+[33maca849f[m HEAD@{20}: commit: feat: 기ì예약 êê¸ê관련 기존 예외클래스 제거
+[33m5a0f11d[m HEAD@{21}: commit: refactor: 예외 처리 리펙토링
+[33m2abcd46[m HEAD@{22}: commit: refactor: MeetingSession 관련 클레클래스 리펙토링
+[33mf6a62b2[m HEAD@{23}: commit: refactor: C ë¯화상채팅 관련 서비스레 ì레이어 í리펙토링
+[33mdb28bd6[m HEAD@{24}: commit: refactor: attendeesessionService ì코드 리펙토링
+[33m570d20e[m HEAD@{25}: commit: feat: user 및 reservaion 예외타입 추가
+[33mb4805bc[m HEAD@{26}: commit: feat: 회의예외타입 추가
+[33m88e2da3[m HEAD@{27}: commit: refactor: ãexception 폴더 global 폴더 하위로 변경
+[33m06e4f7d[m HEAD@{28}: reset: moving to HEAD
+[33m06e4f7d[m HEAD@{29}: commit: refacotr: 예외구구조 변경
+[33m4f3dc96[m HEAD@{30}: commit: refactor: 공백제거 및 폴더 구조 변경
+[33mc95d904[m HEAD@{31}: commit: refactor: global 폴더 셍성 및 폴더 구조 변경
+[33m174f4d7[m HEAD@{32}: checkout: moving from main to refactor/codebase
+[33m174f4d7[m HEAD@{33}: commit (initial): feat: 원본 프로젝트 setup

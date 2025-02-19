@@ -35,6 +35,11 @@ spec:
               value: "{{ .Values.spring.datasource.username }}"
             - name: DB_PASSWORD
               value: "{{ .Values.spring.datasource.password }}"
+            - name: GITHUB_CLIENT_ID
+              value: "{{ .Values.spring.security.oauth2.client.registration.github.client-id }}"
+            - name: GITHUB_CLIENT_SECRET
+              value: "{{ .Values.spring.security.oauth2.client.registration.github.client-secret }}"
+
 
           volumeMounts:
             - name: spring-config
