@@ -15,4 +15,9 @@ public class HealthCheckController {
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Service is healthy");
     }
+
+    @GetMapping("/api/health")
+    public ResponseEntity<String> checkApiHealth() {
+        return ResponseEntity.ok("server is running");
+    }
 }
