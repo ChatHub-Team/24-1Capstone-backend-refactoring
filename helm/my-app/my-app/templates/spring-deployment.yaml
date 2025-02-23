@@ -36,15 +36,32 @@ spec:
             - name: DB_PASSWORD
               value: "{{ .Values.spring.datasource.password }}"
             - name: GITHUB_CLIENT_ID
-              value: "{{ .Values.spring.security.oauth2.client.registration.github.client-id }}"
+              value: "{{ index .Values.spring.security.oauth2.client.registration.github "client-id" }}"
             - name: GITHUB_CLIENT_SECRET
-              value: "{{ .Values.spring.security.oauth2.client.registration.github.client-secret }}"
-
+              value: "{{ index .Values.spring.security.oauth2.client.registration.github "client-secret" }}"
 
           volumeMounts:
             - name: spring-config
               mountPath: /config/application.yml
               subPath: application.yml
+
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: { { .Values.spring.containerPort } }
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            failureThreshold: 3
+            successThreshold: 1
+
+            readinessProbe:
+              httpGet:
+                path: /api/health
+                port: { { .Values.spring.containerPort } }
+              initialDelaySeconds: 5
+              periodSeconds: 10
+              failureThreshold: 3
+              successThreshold: 1
 
       volumes:
         - name: spring-config

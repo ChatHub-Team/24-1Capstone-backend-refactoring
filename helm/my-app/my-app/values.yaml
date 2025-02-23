@@ -2,6 +2,9 @@ ingress:
   host: buildmystudy.com
   pathType: Prefix
 
+service:
+  port: 80
+
 spring:
   image:
     repository: 440744253928.dkr.ecr.ap-northeast-2.amazonaws.com/chathub/backend   # ECR에 저장된 스프링 이미지 URL
@@ -10,7 +13,7 @@ spring:
     port: 80
   containerPort: 8080
   datasource:
-    url: jdbc:mysql://<RDS_ENDPOINT>:3306/mydb
+    url: jdbc:mysql://database-1.c9s06ug8a482.ap-northeast-2.rds.amazonaws.com:3306/mydb
     username: yourusername
     password: yourpassword
   security:
