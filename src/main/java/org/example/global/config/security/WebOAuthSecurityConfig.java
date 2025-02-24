@@ -85,12 +85,13 @@ public class WebOAuthSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://www.coffeechat.shop");
-        configuration.addAllowedOrigin("http://www.coffeechat.shop");
-        configuration.addAllowedOrigin("https://coffeechat.shop");
-        configuration.addAllowedOrigin("http://coffeechat.shop");
+        configuration.addAllowedOrigin("http://localhost:3000");  // 개발 중 로컬 주소
+        configuration.addAllowedOrigin("https://www.coffeechat.shop"); // 프론트엔드 도메인
+        configuration.addAllowedOrigin("http://www.coffeechat.shop"); // 프론트엔드 도메인
+        configuration.addAllowedOrigin("https://coffeechat.shop");   // 프론트엔드 도메인
+        configuration.addAllowedOrigin("http://coffeechat.shop");    // 프론트엔드 도메인
+        configuration.addAllowedOrigin("https://buildmystudy.com"); // 추가된 도메인
+        configuration.addAllowedOrigin("https://www.buildmystudy.com"); // 추가된 도메인
         configuration.addExposedHeader("Authorization");
         configuration.addExposedHeader("refresh_token");
         configuration.addExposedHeader("Set-Cookie");
