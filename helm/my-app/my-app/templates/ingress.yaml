@@ -3,9 +3,13 @@ kind: Ingress
 metadata:
   name: buildmystudy-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip # Target Group을 IP 모드로 생성
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    kubernetes.io/ingress.class: "alb"  # ALB Ingress Controller를 사용
 spec:
+  ingressClassName: alb
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -14,13 +18,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: spring-service
+                name: spring-service  # 네임스페이스를 제외한 서비스 이름만 작성
                 port:
                   number: {{ .Values.spring.service.port }}
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: front-service
+                name: front-service  # 네임스페이스를 제외한 서비스 이름만 작성
                 port:
                   number: {{ .Values.front.service.port }}

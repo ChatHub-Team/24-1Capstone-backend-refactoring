@@ -48,20 +48,20 @@ spec:
           livenessProbe:
             httpGet:
               path: /api/health
-              port: { { .Values.spring.containerPort } }
+              port: {{ .Values.spring.containerPort }}
             initialDelaySeconds: 30
             periodSeconds: 60
             failureThreshold: 3
             successThreshold: 1
 
-            readinessProbe:
-              httpGet:
-                path: /api/health
-                port: { { .Values.spring.containerPort } }
-              initialDelaySeconds: 5
-              periodSeconds: 10
-              failureThreshold: 3
-              successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.spring.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
 
       volumes:
         - name: spring-config
