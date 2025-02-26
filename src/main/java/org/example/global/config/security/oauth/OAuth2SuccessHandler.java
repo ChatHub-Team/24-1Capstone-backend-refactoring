@@ -27,7 +27,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
 
 //    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login"; //redirect 경로
-    public static final String REDIRECT_PATH = "http://localhost:3000/api/auth/login"; //redirect 경로
+//    public static final String REDIRECT_PATH = "http://localhost:3000/api/auth/login"; //redirect 경로
+      public static final String REDIRECT_PATH = "https://buildmystudy.com/api/auth/login"; //배포된 서버의 콜백 URL
+
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
