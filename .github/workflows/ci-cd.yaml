@@ -40,6 +40,9 @@ jobs:
           sed -i 's|GITHUB_CLIENT_ID_PLACEHOLDER|${{ secrets.OAUTH2_CLIENT_ID }}|g' src/main/resources/application-test.yml
           sed -i 's|GITHUB_CLIENT_SECRET_PLACEHOLDER|${{ secrets.OAUTH2_CLIENT_SECRET }}|g' src/main/resources/application-test.yml
 
+      - name: Give gradlew execute permission
+        run: chmod +x ./gradlew
+
       - name: Build and run tests
         run: ./gradlew clean test
 
