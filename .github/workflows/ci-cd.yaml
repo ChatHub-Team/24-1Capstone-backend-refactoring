@@ -4,7 +4,7 @@ on:
     types: [opened, synchronize, closed]
     branches: [dev, main]
     paths:
-      - 'backend-main/**'
+      - 'backend-main/src/**'
 
 jobs:
   test:
