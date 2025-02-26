@@ -6,6 +6,10 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 
+# Add execute permission to gradlew
+RUN chmod +x gradlew
+
+# Run the Gradle dependencies command
 RUN ./gradlew dependencies --no-daemon --stacktrace
 
 COPY src src
