@@ -18,6 +18,6 @@ public class HealthCheckController {
 
     @GetMapping("/api/health")
     public ResponseEntity<String> checkApiHealth() {
-        return ResponseEntity.ok("server is running-ci-test");
+        return ResponseEntity.ok("server is running-cicd-test");
     }
 }
