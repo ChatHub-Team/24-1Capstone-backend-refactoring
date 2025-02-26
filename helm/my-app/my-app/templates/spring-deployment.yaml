@@ -1,21 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-deployment
+  name: "{{ .Values.spring.labels }}-deployment"
   labels:
-    app: spring
+    app: "{{ .Values.spring.labels }}"
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: spring
+      app: "{{ .Values.spring.labels }}"
   template:
     metadata:
       labels:
-        app: spring
+        app: "{{ .Values.spring.labels }}"
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
-        - name: spring
+        - name: "{{ .Values.spring.labels }}"
           image: "{{ .Values.spring.image.repository }}:{{ .Values.spring.image.tag }}"
           ports:
             - containerPort: {{ .Values.spring.containerPort }}

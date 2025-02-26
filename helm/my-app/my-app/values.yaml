@@ -6,6 +6,7 @@ service:
   port: 80
 
 spring:
+  labels: spring
   image:
     repository: 440744253928.dkr.ecr.ap-northeast-2.amazonaws.com/chathub/backend   # ECR에 저장된 스프링 이미지 URL
     tag: latest
@@ -25,6 +26,7 @@ spring:
             client-secret: "your-client-secret"
 
 front:
+  labels: front
   image:
     repository: 440744253928.dkr.ecr.ap-northeast-2.amazonaws.com/chathub/front
     tag: latest

@@ -3,19 +3,22 @@ kind: Deployment
 metadata:
   name: front-deployment
   labels:
-    app: front
+    app: "{{ .Values.front.labels }}"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: front
+      app: "{{ .Values.spring.labels }}"
   template:
     metadata:
       labels:
-        app: front
+        app: "{{ .Values.spring.labels }}"
+      annotations:
+        checksum/config: { { include (print $.Template.BasePath "/configmap.yaml") . | sha256sum } }
+        rollme: { { randAlphaNum 5 | quote } }
     spec:
       containers:
-        - name: front
+        - name: "{{ .Values.spring.labels }}"
           image: "{{ .Values.front.image.repository }}:{{ .Values.front.image.tag }}"
           ports:
             - containerPort: {{ .Values.front.containerPort }}
