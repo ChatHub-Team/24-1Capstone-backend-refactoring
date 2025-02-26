@@ -14,7 +14,6 @@ spec:
       labels:
         app: "{{ .Values.spring.labels }}"
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
