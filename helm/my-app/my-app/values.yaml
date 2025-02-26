@@ -34,4 +34,4 @@ front:
     port: 80
   containerPort: 3000
   env:
-    NEXT_PUBLIC_API_BASE_URL: "https://buildmystudy.com"
+    NEXT_PUBLIC_API_BASE_URL: "https://buildmystudy.com/api"
