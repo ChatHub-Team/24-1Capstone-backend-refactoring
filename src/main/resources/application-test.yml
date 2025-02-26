@@ -9,16 +9,16 @@ server:
 
 aws:
   credentials:
-    access-key: ${AWS_ACCESS_KEY_ID}
-    secret-key: ${AWS_SECRET_ACCESS_KEY}
+    access-key: AWS_ACCESS_KEY_ID_PLACEHOLDER
+    secret-key: AWS_SECRET_ACCESS_KEY_PLACEHOLDER
 
 spring:
   profiles:
     active: test
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: DB_URL_PLACEHOLDER
+    username: DB_USERNAME_PLACEHOLDER
+    password: DB_PASSWORD_PLACEHOLDER
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -43,8 +43,8 @@ spring:
       client:
         registration:
           github:
-            client-id: ${GITHUB_CLIENT_ID}
-            client-secret: ${GITHUB_CLIENT_SECRET}
+            client-id: GITHUB_CLIENT_ID_PLACEHOLDER
+            client-secret: GITHUB_CLIENT_SECRET_PLACEHOLDER
 
 jwt:
   issuer: dsada
