@@ -13,18 +13,41 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '17'
+
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.gradle
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle*') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
+      - name: Inject secrets into application-test.yml
+        run: |
+          sed -i 's|AWS_ACCESS_KEY_ID_PLACEHOLDER|${AWS_ACCESS_KEY_ID}|g' src/main/resources/application-test.yml
+          sed -i 's|AWS_SECRET_ACCESS_KEY_PLACEHOLDER|${AWS_SECRET_ACCESS_KEY}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_URL_PLACEHOLDER|${DB_URL}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_USERNAME_PLACEHOLDER|${DB_USERNAME}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_PASSWORD_PLACEHOLDER|${DB_PASSWORD}|g' src/main/resources/application-test.yml
+          sed -i 's|GITHUB_CLIENT_ID_PLACEHOLDER|${GITHUB_CLIENT_ID}|g' src/main/resources/application-test.yml
+          sed -i 's|GITHUB_CLIENT_SECRET_PLACEHOLDER|${GITHUB_CLIENT_SECRET}|g' src/main/resources/application-test.yml
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+
       - name: Build and run tests
         run: ./gradlew clean test
 
@@ -108,7 +131,7 @@ jobs:
       - name: deploy
         id: status
         run: |
-          helm upgrade --install my-app kubernetes/my-app --create-namespace --namespace chathub-${{ vars.SUFFIX }} \
+          helm upgrade --install my-app ./helm/my-app/my-app --create-namespace --namespace chathub-${{ vars.SUFFIX }} \
           --set image.tag=${{ github.sha }} \
           --set image.repository=${{ secrets.REGISTRY }}/${{ vars.REPOSITORY }} \
           --set spring.datasource.url=${{ secrets.SPRING_DATASOURCE_URL }} \

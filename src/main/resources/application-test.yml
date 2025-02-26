@@ -9,10 +9,12 @@ server:
 
 aws:
   credentials:
-    access-key: YOUR_AWS_ACCESS_KEY_ID
-    secret-key: YOUR_AWS_SECRET_ACCESS_KEY
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
 
 spring:
+  profiles:
+    active: test
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
@@ -41,9 +43,8 @@ spring:
       client:
         registration:
           github:
-            client-id: ${GITHUB_CLIENT_ID}   # 환경 변수로 설정
-            client-secret: ${GITHUB_CLIENT_SECRET}   # 환경 변수로 설정
-            scope:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
 
 jwt:
   issuer: dsada
