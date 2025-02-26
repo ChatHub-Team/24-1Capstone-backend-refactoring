@@ -4,7 +4,7 @@ on:
     types: [opened, synchronize, closed]
     branches: [dev, main]
     paths:
-      - 'backend-main/src/**'
+      - '**/*'
 
 jobs:
   test:
@@ -32,21 +32,13 @@ jobs:
 
       - name: Inject secrets into application-test.yml
         run: |
-          sed -i 's|AWS_ACCESS_KEY_ID_PLACEHOLDER|${AWS_ACCESS_KEY_ID}|g' src/main/resources/application-test.yml
-          sed -i 's|AWS_SECRET_ACCESS_KEY_PLACEHOLDER|${AWS_SECRET_ACCESS_KEY}|g' src/main/resources/application-test.yml
-          sed -i 's|DB_URL_PLACEHOLDER|${DB_URL}|g' src/main/resources/application-test.yml
-          sed -i 's|DB_USERNAME_PLACEHOLDER|${DB_USERNAME}|g' src/main/resources/application-test.yml
-          sed -i 's|DB_PASSWORD_PLACEHOLDER|${DB_PASSWORD}|g' src/main/resources/application-test.yml
-          sed -i 's|GITHUB_CLIENT_ID_PLACEHOLDER|${GITHUB_CLIENT_ID}|g' src/main/resources/application-test.yml
-          sed -i 's|GITHUB_CLIENT_SECRET_PLACEHOLDER|${GITHUB_CLIENT_SECRET}|g' src/main/resources/application-test.yml
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET: ${{ secrets.GITHUB_CLIENT_SECRET }}
+          sed -i 's|AWS_ACCESS_KEY_ID_PLACEHOLDER|${{ secrets.AWS_ACCESS_KEY_ID }}|g' src/main/resources/application-test.yml
+          sed -i 's|AWS_SECRET_ACCESS_KEY_PLACEHOLDER|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_URL_PLACEHOLDER|${{ secrets.SPRING_DATASOURCE_URL }}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_USERNAME_PLACEHOLDER|${{ secrets.SPRING_DATASOURCE_USERNAME }}|g' src/main/resources/application-test.yml
+          sed -i 's|DB_PASSWORD_PLACEHOLDER|${{ secrets.SPRING_DATASOURCE_PASSWORD }}|g' src/main/resources/application-test.yml
+          sed -i 's|GITHUB_CLIENT_ID_PLACEHOLDER|${{ secrets.OAUTH2_CLIENT_ID }}|g' src/main/resources/application-test.yml
+          sed -i 's|GITHUB_CLIENT_SECRET_PLACEHOLDER|${{ secrets.OAUTH2_CLIENT_SECRET }}|g' src/main/resources/application-test.yml
 
       - name: Build and run tests
         run: ./gradlew clean test
