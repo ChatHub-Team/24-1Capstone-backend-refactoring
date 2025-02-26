@@ -172,4 +172,4 @@ jobs:
           git push origin release/${{ github.run_id }}
       - name: create pr
         run: |
-          gh pr create --base master --head release/${{ github.run_id }} --title "release/${{ github.run_id }} -> main" --body "release pr"
+          gh pr create --base main --head release/${{ github.run_id }} --title "release/${{ github.run_id }} -> main" --body "release pr"
