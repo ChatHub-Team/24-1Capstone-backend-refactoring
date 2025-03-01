@@ -5,7 +5,7 @@ GitHub로 시작하는 쉽고 빠른 개발자 커피챗
 &nbsp;
 
 ## ✨ 아키텍처
-![아키텍처 다이어그램](docs/images/architecture.png)
+![아키텍처 다이어그램](https://github.com/ChatHub-Team/24-1Capstone-backend-refactoring/blob/main/docs/images/chathub%20architacture.png)
 
 
 ## ✨ 핵심 기능
