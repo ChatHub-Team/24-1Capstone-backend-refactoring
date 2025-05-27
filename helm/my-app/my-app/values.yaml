@@ -25,17 +25,6 @@ spring:
             client-id: "your-client-id"
             client-secret: "your-client-secret"
 
-front:
-  labels: front
-  image:
-    repository: 440744253928.dkr.ecr.ap-northeast-2.amazonaws.com/chathub/front
-    tag: latest
-  service:
-    port: 80
-  containerPort: 3000
-  env:
-    NEXT_PUBLIC_API_BASE_URL: "https://buildmystudy.com/api"
-
 autoscaling:
   enabled: true
   minReplicas: 2

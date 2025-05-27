@@ -21,10 +21,3 @@ spec:
                 name: spring-service  # 네임스페이스를 제외한 서비스 이름만 작성
                 port:
                   number: {{ .Values.spring.service.port }}
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: front-service  # 네임스페이스를 제외한 서비스 이름만 작성
-                port:
-                  number: {{ .Values.front.service.port }}
