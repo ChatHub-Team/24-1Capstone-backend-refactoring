@@ -6,7 +6,15 @@
 ---
 
 ## ✨ 아키텍처
-![아키텍처 다이어그램](https://github.com/ChatHub-Team/24-1Capstone-backend-refactoring/blob/main/docs/images/chathub%20architacture.png)
+![아키텍처 다이어그램](https://github.com/ChatHub-Team/24-1Capstone-backend-refactoring/blob/main/docs/images/chathub-architacture.png)
+
+![서비스 아키텍처 다이어그램](https://github.com/ChatHub-Team/24-1Capstone-backend-refactoring/blob/main/docs/images/chathub-alb-architacture.png)
+
+---
+
+## ✨ CI/CD 아키텍처
+
+![CI/CD 아키텍처 다이어그램](https://github.com/ChatHub-Team/24-1Capstone-backend-refactoring/blob/main/docs/images/cicd-architacture.png)
 
 ---
 
